@@ -1,15 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Popover from "react-bootstrap/Popover";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 export default function SummaryForm() {
-    const [disableButton, setDisableButton] = useState(true);
+  const [checkboxChecked, setCheckboxChecked] = useState(false);
 
-    const handleClick = () => setDisableButton(!disableButton);
+  const popover = (
+    <Popover id="popover-basic">
+      <Popover.Content>No ice cream will actually be delivered</Popover.Content>
+    </Popover>
+  );
 
-    return (
-        <div>
-            <button disabled={disableButton}>Confirm Order</button>
-            <label htmlFor="terms-checkbox">Terms and Conditions</label>
-            <input onClick={handleClick} type="checkbox" id="terms-checkbox"></input>
-        </div>
-    )
+  const checkboxLabel = (
+    <span>
+      I agree to
+      <OverlayTrigger placement="right" overlay={popover}>
+        <span style={{ color: "blue" }}> Terms and Conditions</span>
+      </OverlayTrigger>
+    </span>
+  );
+
+  return (
+    <Form>
+      <Form.Group controlId="terms-and-conditions">
+        <Form.Check
+          type="checkbox"
+          checked={checkboxChecked}
+          onChange={(e) => setCheckboxChecked(e.target.checked)}
+          label={checkboxLabel}
+        />
+      </Form.Group>
+      <Button variant="primary" type="submit" disabled={!checkboxChecked}>
+        Confirm Order
+      </Button>
+    </Form>
+  );
 }
